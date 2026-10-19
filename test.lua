@@ -42,7 +42,15 @@ assert_contains(rendered, 'Area: West Ronfaure')
 assert_contains(rendered, '3 Orcs')
 assert_contains(rendered, 'Progress: 1/3')
 
+-- A tome message can contain multiple target rows separated by control bytes.
+command('clear')
+incoming('The information on this page instructs you to defeat the following:', '', 151)
+incoming('7 Evil Eyes.' .. string.char(1) .. '4 members of the skeleton family.' .. string.char(1) .. '1 member of the evil weapon family.', '', 151)
+assert_contains(rendered, '7 Evil Eyes\n  4 members of the skeleton family\n  1 member of the evil weapon family')
+
 -- Equal totals represent separate target groups.
+command('clear')
+incoming('You defeated a designated target. (Progress: 1/3)', '', 0)
 incoming('You defeated a designated target. (Progress: 1/3)', '', 0)
 assert_contains(rendered, 'Progress: 1/3\nProgress: 1/3')
 

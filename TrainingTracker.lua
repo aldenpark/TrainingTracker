@@ -43,7 +43,11 @@ local function refresh()
     if #state.targets == 0 then
         lines[#lines + 1] = state.reading_targets and '  (reading page...)' or '  (targets unknown)'
     end
-    for _, target in ipairs(state.targets) do lines[#lines + 1] = '  ' .. target end
+    for _, target in ipairs(state.targets) do
+        for target_line in target:gmatch('[^%c]+') do
+            lines[#lines + 1] = '  ' .. target_line:gsub('%.$', '')
+        end
+    end
     for _, progress in ipairs(state.progresses) do
         lines[#lines + 1] = ('Progress: %d/%d'):format(progress.current, progress.total)
     end
